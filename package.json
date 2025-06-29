@@ -1,6 +1,6 @@
 {
   "name": "@ariefrahman39/shared-utils",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A shared utils library for Proyek Akhir",
   "module": "index.ts",
   "type": "module",
@@ -15,6 +15,7 @@
     "@types/express": "^5.0.1",
     "axios": "^1.10.0",
     "express": "^5.1.0",
+    "jose": "^6.0.11",
     "zod": "^3.24.2"
   }
 }
