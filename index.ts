@@ -13,4 +13,4 @@ export {
 export { INTERNAL_SERVICES } from "./src/config"
 
 // * Types
-export type { PaginationResponse } from "./src/types"
+export type { PaginationResponse, JWTPayload } from "./src/types"

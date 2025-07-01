@@ -1,6 +1,9 @@
 import type { RequestHandler } from "express"
 import * as jose from "jose"
 import response from "./response"
+import getAuthToken from "./get-auth-token"
+import verifyJwt from "./verify-jwt"
+import type { JWT, JWTPayload } from "../types"
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET as string)
 
@@ -9,15 +12,12 @@ export default class AuthMiddleware {
     return async (req, res, next) => {
       try {
         // Verify JWT
-        const token =
-          req.headers?.authorization?.split(" ")[1] || req?.cookies?.token || ""
+        const token = getAuthToken(req)
 
-        const user = (await jose.jwtVerify(token, secret, {
-          algorithms: ["HS256"],
-        })) as any
+        const jwt = (await verifyJwt(token, "throw")) as unknown as JWT
 
         // Check user roles
-        if (roles?.length > 0 && !roles.includes(user.payload?.role)) {
+        if (roles?.length > 0 && !roles.includes(jwt.payload.role)) {
           response(res, 403, "Forbidden", {
             message: "You do not have permission to access this resource",
             code: "FORBIDDEN",
@@ -25,7 +25,17 @@ export default class AuthMiddleware {
           return
         }
 
-        next() // Placeholder for authentication logic
+        // Attach for downstream use
+        const { email, name, sub: id, role } = jwt.payload
+
+        req.user = {
+          email,
+          id,
+          name,
+          role,
+        }
+
+        next() 
       } catch (error) {
         if (error instanceof jose.errors.JWTExpired) {
           response(res, 401, "Unauthorized", {
@@ -53,6 +63,19 @@ export default class AuthMiddleware {
             code: "INVALID_OR_EXPIRED",
           },
         })
+      }
+    }
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string
+        email: string
+        name: string
+        role: string
       }
     }
   }
