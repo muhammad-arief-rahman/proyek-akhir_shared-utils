@@ -7,6 +7,7 @@ export {
   zodCatchHandler,
   zodHandler,
   getAuthToken,
+  verifyJwt
 } from "./src/utils"
 
 // * Configs
