@@ -5,6 +5,7 @@ export type JWTPayload = {
   email: string
   name: string
   role: string
+  customerId?: string
   iat: number
   iss: string
   exp: number
