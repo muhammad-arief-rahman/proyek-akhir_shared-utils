@@ -7,11 +7,16 @@ export {
   zodCatchHandler,
   zodHandler,
   getAuthToken,
-  verifyJwt
+  verifyJwt,
 } from "./src/utils"
 
 // * Configs
 export { INTERNAL_SERVICES } from "./src/config"
 
 // * Types
-export type { PaginationResponse, JWTPayload } from "./src/types"
+export type {
+  PaginationResponse,
+  JWTPayload,
+  APIError,
+  APIResponse,
+} from "./src/types"
