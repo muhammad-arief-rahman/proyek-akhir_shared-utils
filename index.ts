@@ -19,6 +19,9 @@ export {
 // * Configs
 export { INTERNAL_SERVICES } from "./src/config"
 
+// * Schemas
+export { multerFileSchema } from "./src/schema"
+
 // * Types
 export type {
   PaginationResponse,

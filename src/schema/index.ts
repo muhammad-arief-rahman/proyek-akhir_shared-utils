@@ -1,0 +1,1 @@
+export { multerFileSchema } from "./media"
