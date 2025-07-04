@@ -1,6 +1,6 @@
 {
   "name": "@ariefrahman39/shared-utils",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "A shared utils library for Proyek Akhir",
   "module": "index.ts",
   "type": "module",
@@ -13,9 +13,11 @@
   },
   "dependencies": {
     "@types/express": "^5.0.1",
+    "@types/multer": "^2.0.0",
     "axios": "^1.10.0",
     "express": "^5.1.0",
     "jose": "^6.0.11",
+    "multer": "^2.0.1",
     "zod": "^3.24.2"
   }
 }

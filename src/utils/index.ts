@@ -6,4 +6,6 @@ export { default as createResponsePagination } from "./create-response-paginatio
 export { default as getAuthToken } from "./get-auth-token"
 export { default as verifyJwt } from "./verify-jwt"
 
+export { getMulterFile, getMulterFiles, storeMedia, deleteMedia } from "./media"
+
 export { default as AuthMiddleware } from "./auth-middleware"

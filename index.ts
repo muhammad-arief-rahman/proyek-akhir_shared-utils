@@ -8,6 +8,12 @@ export {
   zodHandler,
   getAuthToken,
   verifyJwt,
+
+  // Media utilities
+  getMulterFile,
+  getMulterFiles,
+  storeMedia,
+  deleteMedia,
 } from "./src/utils"
 
 // * Configs
