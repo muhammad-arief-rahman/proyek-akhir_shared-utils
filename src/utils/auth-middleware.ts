@@ -1,15 +1,23 @@
 import type { RequestHandler } from "express"
 import * as jose from "jose"
-import response from "./response"
+import type { JWT } from "../types"
 import getAuthToken from "./get-auth-token"
+import response from "./response"
 import verifyJwt from "./verify-jwt"
-import type { JWT, JWTPayload } from "../types"
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET as string)
 
 export default class AuthMiddleware {
   static authenticate: (...roles: string[]) => RequestHandler = (...roles) => {
     return async (req, res, next) => {
+      if (
+        req.headers["x-service-secret"] &&
+        req.headers["x-service-secret"] !== process.env.SERVICE_SECRET
+      ) {
+        response(res, 403, "Forbidden", {
+          error: "Invalid or missing service secret",
+        })
+        return
+      }
+
       try {
         // Verify JWT
         const token = getAuthToken(req)
@@ -35,7 +43,7 @@ export default class AuthMiddleware {
           role,
         }
 
-        next() 
+        next()
       } catch (error) {
         if (error instanceof jose.errors.JWTExpired) {
           response(res, 401, "Unauthorized", {
