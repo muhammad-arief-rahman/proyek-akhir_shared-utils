@@ -8,13 +8,25 @@ import verifyJwt from "./verify-jwt"
 export default class AuthMiddleware {
   static authenticate: (...roles: string[]) => RequestHandler = (...roles) => {
     return async (req, res, next) => {
-      if (
-        req.headers["x-service-secret"] &&
-        req.headers["x-service-secret"] !== process.env.SERVICE_SECRET
-      ) {
-        response(res, 403, "Forbidden", {
-          error: "Invalid or missing service secret",
-        })
+      // Create a bypass if the request is from a service
+      if (req.headers["x-service-secret"]) {
+        const serviceSecret = process.env.SERVICE_SECRET
+
+        if (req.headers["x-service-secret"] !== serviceSecret) {
+          response(res, 403, "Forbidden", {
+            error: "Invalid or missing service secret",
+          })
+          return
+        }
+
+        // Immediately allow the request to proceed
+        req.service = {
+          authenticated: true,
+          id: (req.headers["x-service-id"] as string) ?? "generic-service",
+          name: (req.headers["x-service-name"] as string) ?? "Generic Service",
+        }
+
+        next()
         return
       }
 
@@ -84,6 +96,11 @@ declare global {
         email: string
         name: string
         role: string
+      }
+      service?: {
+        authenticated: boolean
+        name?: string
+        id?: string
       }
     }
   }
