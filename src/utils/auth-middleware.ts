@@ -46,13 +46,14 @@ export default class AuthMiddleware {
         }
 
         // Attach for downstream use
-        const { email, name, sub: id, role } = jwt.payload
+        const { email, name, sub: id, role, customerId } = jwt.payload
 
         req.user = {
           email,
           id,
           name,
           role,
+          customerId: customerId ?? null,
         }
 
         next()
@@ -96,6 +97,7 @@ declare global {
         email: string
         name: string
         role: string
+        customerId?: string | null
       }
       service?: {
         authenticated: boolean
