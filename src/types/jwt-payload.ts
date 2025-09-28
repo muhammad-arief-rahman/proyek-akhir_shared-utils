@@ -6,6 +6,7 @@ export type JWTPayload = {
   name: string
   role: string
   customerId?: string
+  avatar: string | null
   iat: number
   iss: string
   exp: number
